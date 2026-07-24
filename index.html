@@ -77,6 +77,7 @@
   .cbtn{width:46px;height:46px;border-radius:50%;border:1px solid rgba(236,212,153,.32);cursor:pointer;
     background:rgba(255,255,255,.05);color:var(--cream);font-size:16px;display:grid;place-items:center;
     transition:background .16s ease,transform .16s ease}
+  .cbtn.skip{width:auto;padding:0 12px;font-size:12px;font-weight:700}
   .cbtn:hover{background:rgba(200,162,75,.18)}
   .cbtn:active{transform:scale(.94)}
   .cbtn.main{width:62px;height:62px;font-size:22px;border:none;
@@ -219,14 +220,16 @@
         <input type="range" id="seek" min="0" max="1000" value="0" step="1" aria-label="Tua bài">
         <span class="time" id="tDur">0:00</span>
       </div>
-      <div class="ctrls">
-        <button class="cbtn" id="prev" aria-label="Bài trước">⏮</button>
-        <button class="cbtn main" id="play" aria-label="Phát">▶</button>
-        <button class="cbtn" id="next" aria-label="Bài sau">⏭</button>
-      </div>
+    <div class="ctrls">
+  <button class="cbtn" id="prev" aria-label="Bài trước">⏮</button>
+  <button class="cbtn skip" id="skipBack" aria-label="Lùi 15 giây">⏪15</button>
+  <button class="cbtn main" id="play" aria-label="Phát">▶</button>
+  <button class="cbtn skip" id="skipFwd" aria-label="Tiến 15 giây">15⏩</button>
+  <button class="cbtn" id="next" aria-label="Bài sau">⏭</button>
+</div>
       <div class="playlist" id="playlist"></div>
     </div>
-    <audio id="au" preload="metadata"></audio>
+    <audio id="au" preload="none"></audio>
   </section>
 
   <!-- ================= MÁY BAY GIẤY ================= -->
@@ -297,27 +300,27 @@ const CONFIG = {
 
   // (1) NHẠC PHÁT THANH -------------------------------------------------
   // Bỏ 6 file MP3 vào thư mục "audio" trong repo. Sửa tên file + tên bài cho khớp.
-  tracks: [
-    { file:'https://archive.org/download/01-buoisangphatthanh-06h-30/01-buoisangphatthanh-06h30.MP3', title:'Chương trình Phát thanh 06h30' },
-    { file:'https://archive.org/download/01-buoisangphatthanh-06h-30/02-khanhthanhhoikhoa.MP3', title:'Nhạc nền công trình Hội Khóa 0306' },
-    { file:'https://archive.org/download/01-buoisangphatthanh-06h-30/03-nhacnenBangnhanxetthidau.mp3', title:'Nhạc nền Bảng nhận xét thi đua' },
-    { file:'https://archive.org/download/01-buoisangphatthanh-06h-30/04-buiphan.mp3', title:'Bụi Phấn' },
-    { file:'https://archive.org/download/01-buoisangphatthanh-06h-30/05-nucuoi1820.mp3', title:'Nụ cười 18 - 20' },
-    { file:'https://archive.org/download/01-buoisangphatthanh-06h-30/06-kiemtrabaicu.MP3', title:'Nhạc nền Kiểm tra bài cũ' },
-    { file:'https://archive.org/download/01-buoisangphatthanh-06h-30/07-duongvenha-phongmaybay.MP3', title:'Nhạc nền Phóng Máy bay' },
-    { file:'https://archive.org/download/01-buoisangphatthanh-06h-30/08-tinhtho.mp3', title:'Tình Thơ' },
-    { file:'https://archive.org/download/01-buoisangphatthanh-06h-30/09-lemontree.mp3', title:'Lemon Tree' },
-    { file:'https://archive.org/download/01-buoisangphatthanh-06h-30/10-nhactonvinhthayco.mp3', title:'Nhạc nền tôn vinh Thầy Cô' },
-    { file:'https://archive.org/download/01-buoisangphatthanh-06h-30/11-homquaemtoitruong.mp3', title:'Hôm qua em tới trường' },
-    { file:'https://archive.org/download/01-buoisangphatthanh-06h-30/12-nhacnenkahoot.mp3', title:'Nhạc nền Game Kahoot' },
-    { file:'https://archive.org/download/01-buoisangphatthanh-06h-30/13-youraisemeup.mp3', title:'You raise me up' },
-    { file:'https://archive.org/download/01-buoisangphatthanh-06h-30/14-moneymoney.MP3', title:'Vinh danh nhà tài trợ' },
-    { file:'https://archive.org/download/01-buoisangphatthanh-06h-30/15-talkshow.MP3', title:'Nhạc nền Talkshow' },
-    { file:'https://archive.org/download/01-buoisangphatthanh-06h-30/16-nguoigieomamxanh.mp3', title:'Người gieo mầm xanh' },
-    { file:'https://archive.org/download/01-buoisangphatthanh-06h-30/17-nhungnucuoitrolai.mp3', title:'Những nụ cười trở lại' },
-    { file:'https://archive.org/download/01-buoisangphatthanh-06h-30/18-ngayxuahoangthi.mp3', title:'Ngày xưa Hoàng Thị' }, 
-    { file:'https://archive.org/download/01-buoisangphatthanh-06h-30/19-ketbai0306.MP3', title:'Tổng Kết 0306' }, 
-  ],
+tracks: [
+  { file:'https://archive.org/download/01-buoisangphatthanh-06h-30/01-buoisangphatthanh-06h30.MP3', title:'Chương trình Phát thanh 06h30', dur:19419 },
+  { file:'https://archive.org/download/01-buoisangphatthanh-06h-30/02-khanhthanhhoikhoa.MP3', title:'Nhạc nền công trình Hội Khóa 0306', dur:693 },
+  { file:'https://archive.org/download/01-buoisangphatthanh-06h-30/03-nhacnenBangnhanxetthidau.mp3', title:'Nhạc nền Bảng nhận xét thi đua', dur:355 },
+  { file:'https://archive.org/download/01-buoisangphatthanh-06h-30/04-buiphan.mp3', title:'Bụi Phấn', dur:236 },
+  { file:'https://archive.org/download/01-buoisangphatthanh-06h-30/05-nucuoi1820.mp3', title:'Nụ cười 18 - 20', dur:244 },
+  { file:'https://archive.org/download/01-buoisangphatthanh-06h-30/06-kiemtrabaicu.MP3', title:'Nhạc nền Kiểm tra bài cũ', dur:812 },
+  { file:'https://archive.org/download/01-buoisangphatthanh-06h-30/07-duongvenha-phongmaybay.MP3', title:'Nhạc nền Phóng Máy bay', dur:432 },
+  { file:'https://archive.org/download/01-buoisangphatthanh-06h-30/08-tinhtho.mp3', title:'Tình Thơ', dur:262 },
+  { file:'https://archive.org/download/01-buoisangphatthanh-06h-30/09-lemontree.mp3', title:'Lemon Tree', dur:192 },
+  { file:'https://archive.org/download/01-buoisangphatthanh-06h-30/10-nhactonvinhthayco.mp3', title:'Nhạc nền tôn vinh Thầy Cô', dur:271 },
+  { file:'https://archive.org/download/01-buoisangphatthanh-06h-30/11-homquaemtoitruong.mp3', title:'Hôm qua em tới trường', dur:281 },
+  { file:'https://archive.org/download/01-buoisangphatthanh-06h-30/12-nhacnenkahoot.mp3', title:'Nhạc nền Game Kahoot', dur:1799 },
+  { file:'https://archive.org/download/01-buoisangphatthanh-06h-30/13-youraisemeup.mp3', title:'You raise me up', dur:240 },
+  { file:'https://archive.org/download/01-buoisangphatthanh-06h-30/14-moneymoney.MP3', title:'Vinh danh nhà tài trợ', dur:522 },
+  { file:'https://archive.org/download/01-buoisangphatthanh-06h-30/15-talkshow.MP3', title:'Nhạc nền Talkshow', dur:684 },
+  { file:'https://archive.org/download/01-buoisangphatthanh-06h-30/16-nguoigieomamxanh.mp3', title:'Người gieo mầm xanh', dur:264 },
+  { file:'https://archive.org/download/01-buoisangphatthanh-06h-30/17-nhungnucuoitrolai.mp3', title:'Những nụ cười trở lại', dur:264 },
+  { file:'https://archive.org/download/01-buoisangphatthanh-06h-30/18-ngayxuahoangthi.mp3', title:'Ngày xưa Hoàng Thị', dur:344 },
+  { file:'https://archive.org/download/01-buoisangphatthanh-06h-30/19-ketbai0306.MP3', title:'Tổng Kết 0306', dur:658 },
+],
 
   // (2) KẾT NỐI SHEET CÓ SẴN --------------------------------------------
   // Link Apps Script Web App (đọc lời chúc + ghi thẳng vào Sheet).
@@ -333,12 +336,22 @@ const CONFIG = {
 
 
 /* ------------------------- PHÁT THANH ------------------------- */
+/* ------------------------- PHÁT THANH ------------------------- */
 const au=document.getElementById('au'), playBtn=document.getElementById('play'),
       disc=document.getElementById('disc'), nowTitle=document.getElementById('nowTitle'),
       seek=document.getElementById('seek'), tCur=document.getElementById('tCur'),
-      tDur=document.getElementById('tDur'), plEl=document.getElementById('playlist');
+      tDur=document.getElementById('tDur'), plEl=document.getElementById('playlist'),
+      skipBackBtn=document.getElementById('skipBack'), skipFwdBtn=document.getElementById('skipFwd');
 let idx=0, seeking=false;
-const fmt=s=>{ if(!isFinite(s)||s<0)s=0; return Math.floor(s/60)+':'+String(Math.floor(s%60)).padStart(2,'0'); };
+
+const fmt=s=>{ if(!isFinite(s)||s<0)s=0; s=Math.floor(s);
+  const h=Math.floor(s/3600), m=Math.floor((s%3600)/60), sec=s%60;
+  return (h>0 ? h+':'+String(m).padStart(2,'0') : m) + ':' + String(sec).padStart(2,'0'); };
+
+// Dùng thời lượng biết trước (lấy từ archive.org) thay vì au.duration,
+// vì file VBR dài không có Xing header khiến trình duyệt phải quét gần hết
+// file mới tính ra duration -> treo UI với file 296MB.
+function knownDur(i){ return (CONFIG.tracks[i] && CONFIG.tracks[i].dur) || au.duration || 0; }
 
 plEl.innerHTML = CONFIG.tracks.map((t,i)=>
   `<div class="trk" data-i="${i}"><span class="n">${String(i+1).padStart(2,'0')}</span>
@@ -353,27 +366,53 @@ function mark(){
     else if(!el.classList.contains('err')) el.querySelector('.st').textContent='';
   });
 }
+
 function load(i,autoplay){
   idx=(i+CONFIG.tracks.length)%CONFIG.tracks.length;
   const t=CONFIG.tracks[idx];
-  au.src=t.file; nowTitle.textContent=t.title; mark();
+  au.src=t.file; nowTitle.dataset.buf='0'; nowTitle.textContent=t.title; mark();
+  tDur.textContent = fmt(knownDur(idx));   // hiện tổng thời lượng ngay, không chờ file
+  tCur.textContent = '0:00';
+  seek.value = 0;
   if(autoplay) play();
 }
+
 function play(){ au.play().then(()=>{playBtn.textContent='❚❚';disc.classList.add('spin');mark();})
   .catch(()=>{playBtn.textContent='▶';disc.classList.remove('spin');}); }
 function pause(){ au.pause(); playBtn.textContent='▶'; disc.classList.remove('spin'); mark(); }
+
 playBtn.onclick=()=>{ if(!au.src) load(0,true); else au.paused?play():pause(); };
 document.getElementById('prev').onclick=()=>load(idx-1,true);
 document.getElementById('next').onclick=()=>load(idx+1,true);
-au.addEventListener('loadedmetadata',()=>tDur.textContent=fmt(au.duration));
-au.addEventListener('timeupdate',()=>{ if(seeking||!au.duration)return;
-  seek.value=Math.round(au.currentTime/au.duration*1000); tCur.textContent=fmt(au.currentTime); });
+
+// Tua 15 giây: chỉ gửi Range request tới đúng vị trí, không tải lại cả file
+skipBackBtn.onclick=()=>{ if(!au.src) return; au.currentTime = Math.max(0, au.currentTime - 15); };
+skipFwdBtn.onclick =()=>{ if(!au.src) return; const d=knownDur(idx); au.currentTime = d ? Math.min(d, au.currentTime + 15) : au.currentTime + 15; };
+
+au.addEventListener('loadedmetadata',()=>{ if(!CONFIG.tracks[idx].dur) tDur.textContent=fmt(au.duration); });
+au.addEventListener('timeupdate',()=>{
+  if(seeking) return;
+  const d=knownDur(idx);
+  if(d) seek.value=Math.round(au.currentTime/d*1000);
+  tCur.textContent=fmt(au.currentTime);
+});
 au.addEventListener('ended',()=>load(idx+1,true));
 au.addEventListener('error',()=>{ const el=trkEls[idx];
   if(el){el.classList.add('err');el.querySelector('.st').textContent='chưa có file';}
   playBtn.textContent='▶'; disc.classList.remove('spin'); });
-seek.addEventListener('input',()=>{seeking=true; if(au.duration)tCur.textContent=fmt(seek.value/1000*au.duration);});
-seek.addEventListener('change',()=>{ if(au.duration)au.currentTime=seek.value/1000*au.duration; seeking=false; });
+
+// Báo đang buffer để người nghe biết máy đang tải, không phải bị treo
+function updateBufLabel(){
+  const t=CONFIG.tracks[idx]?CONFIG.tracks[idx].title:'';
+  nowTitle.textContent = t + (nowTitle.dataset.buf==='1' ? '  (đang tải…)' : '');
+}
+au.addEventListener('waiting', ()=>{ nowTitle.dataset.buf='1'; updateBufLabel(); });
+au.addEventListener('playing', ()=>{ nowTitle.dataset.buf='0'; updateBufLabel(); });
+au.addEventListener('canplay', ()=>{ nowTitle.dataset.buf='0'; updateBufLabel(); });
+
+seek.addEventListener('input',()=>{ seeking=true; const d=knownDur(idx); if(d) tCur.textContent=fmt(seek.value/1000*d); });
+seek.addEventListener('change',()=>{ const d=knownDur(idx); if(d) au.currentTime=seek.value/1000*d; seeking=false; });
+
 load(0,false);
 
 
